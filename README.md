@@ -7,10 +7,21 @@ Although basic input sanitization is done, be carefull how you set the permissio
 This is the first  prototype - so you were warned.
 
 ## Install
-In order for this to work you will have to add a selinux exception for the nodejs webserver.
+
+In order for this to work you will have to add a selinux exception for the nodejs webserver. You can use NPM to install this package. You can use pm2 to start the app and keep it running though reboots.
+
 ``` sh
-semanage port -a -t http_port_t -p tcp 5602
+sudo yum install nodejs -y
+sudo semanage port -a -t http_port_t -p tcp 5602
+sudo npm install "stenoread-nodejs" -g
+sudo npm install pm2@latest -g
+sudo pm2 start /usr/lib/node_modules/stenoread-nodejs/server.js
+sudo mkdir /data/traces/
+sudo chmod 777 /data/traces/
+sudo pm2 startup 
 ```
+After running this commands the node app is running with root permissions. I didn't have the time so far to find out how to cut down needed permissions and still be able to run stenoread and write the capture files as well as run the app with pm2. If anyone figures this out feel free to contribute to the install process. 
+
 The server is only listening on localhost - so you can use nginx to publish/secure the site.
 Sample NGINX location block:
 ```
@@ -24,6 +35,6 @@ Sample NGINX location block:
     }
 ``` 
 
+Currently there is no cleaning up of pcap's in /data/traces  - so you will have to take care of this manually for the moment.
 
-You will also need to create the folder /data/traces/ which will be used to store the pcap files.
-Currently there is no cleaning up in this dir - so you will have to take care of this manually for the moment.
+Feedback and PR's are welcome.
