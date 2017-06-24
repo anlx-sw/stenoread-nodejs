@@ -1,6 +1,6 @@
 {
   "name": "stenoread-nodejs",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Webinterface to steganographers 'stenoread' utility. ",
   "main": "server.js",
   "dependencies": {
